@@ -42,7 +42,14 @@ jobs:
           $password = -join ($rawPassword | Sort-Object { Get-Random })
           
           # Mask password in logs immediately
-          Write-Host "::add-mask::$password"
+          # Write to Job Summary (only YOU can see this)
+echo "## RDP Access Info" >> $env:GITHUB_STEP_SUMMARY
+echo "| Field | Value |" >> $env:GITHUB_STEP_SUMMARY
+echo "|-------|-------|" >> $env:GITHUB_STEP_SUMMARY
+echo "| Address | $env:TAILSCALE_IP |" >> $env:GITHUB_STEP_SUMMARY
+echo "| Username | RDP |" >> $env:GITHUB_STEP_SUMMARY
+echo "| Password | $env:RDP_PASSWORD |" >> $env:GITHUB_STEP_SUMMARY
+echo "| Port | 3389 |" >> $env:GITHUB_STEP_SUMMARY
           
           $securePass = ConvertTo-SecureString $password -AsPlainText -Force
           
